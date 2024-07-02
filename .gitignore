@@ -7,6 +7,7 @@ local.properties
 
 # Log/OS Files
 *.log
+.DS_Store
 
 # Android Studio generated files and folders
 captures/
@@ -14,6 +15,7 @@ captures/
 .cxx/
 *.apk
 output.json
+app/release/
 
 # IntelliJ
 *.iml
@@ -21,6 +23,7 @@ output.json
 misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
+!.idea/runConfigurations
 
 # Keystore files
 *.jks
