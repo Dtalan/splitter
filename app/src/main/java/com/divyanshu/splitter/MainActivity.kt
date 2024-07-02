@@ -26,12 +26,11 @@ import com.divyanshu.splitter.driveInteractions.DriveInteraction
 import com.divyanshu.splitter.ui.theme.SplitterTheme
 
 class MainActivity : ComponentActivity() {
-
     var driveInteraction: DriveInteraction = DriveInteraction()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
         setContent {
             SplitterTheme {
                 HomeScreen()
