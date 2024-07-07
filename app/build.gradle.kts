@@ -50,6 +50,10 @@ android {
 }
 
 dependencies {
+    //WebRTC for P2P connection.
+    implementation(libs.google.webrtc)
+    implementation(libs.google.webrtc.v1021217)
+
     // Core Libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -74,4 +78,15 @@ dependencies {
     // Debug
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //misc
+    implementation(libs.java.websocket)
+    implementation(libs.gson)
+
+
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.runtime.livedata)
+    implementation(libs.ui)
+    implementation(libs.androidx.material)
+    implementation(libs.ui.tooling.preview)
 }
