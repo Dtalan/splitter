@@ -1,6 +1,6 @@
 package com.divyanshu.splitter
 
-import android.R
+import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,6 +14,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,16 +25,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.divyanshu.splitter.driveInteractions.DriveInteraction
+import com.divyanshu.splitter.p2p.peer.SignalingClient
+import com.divyanshu.splitter.p2p.peer.SplitterPeerConnectionFactory
+import com.divyanshu.splitter.rtc.LocalWebRtcSessionManager
+import com.divyanshu.splitter.rtc.WebRtcSessionManager
+import com.divyanshu.splitter.rtc.WebRtcSessionManagerImpl
 import com.divyanshu.splitter.ui.theme.SplitterTheme
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
+
+
+        requestPermissions(arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO), 0)
+
+        val sessionManager: WebRtcSessionManager = WebRtcSessionManagerImpl(
+            context = this,
+            signalingClient = SignalingClient(),
+            peerConnectionFactory = SplitterPeerConnectionFactory(this)
+        )
+
         setContent {
             SplitterTheme {
-                HomeScreen()
+                CompositionLocalProvider(LocalWebRtcSessionManager provides sessionManager) {
+                    val state by sessionManager.signalingClient.sessionStateFlow.collectAsState()
+                    HomeScreen()
+                }
             }
         }
     }
