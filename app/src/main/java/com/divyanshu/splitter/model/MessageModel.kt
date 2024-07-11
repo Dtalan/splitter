@@ -1,7 +1,7 @@
-package com.divyanshu.splitter.socket
+package com.divyanshu.splitter.model
 
 data class MessageModel(
-    // todo name it enum, and refactor it
+    // TODO: Make it enum and refactor it @whattadarsh
     val type: String,
     val name: String? = null,
     val target: String? = null,
