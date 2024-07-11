@@ -18,20 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.divyanshu.splitter.common.theme.SplitterTheme
 
-@Preview
 @Composable
-fun DialogForIncomingRequestPreview() {
-    SplitterTheme {
-        DialogForIncomingRequest(
-            onAccept = {},
-            onDismiss = {},
-            inviteFrom = "Shah Rukh Khan"
-        )
-    }
-}
-
-@Composable
-fun DialogForIncomingRequest(
+public fun DialogForIncomingRequest(
     onDismiss: () -> Unit = {},
     onAccept: () -> Unit = {},
     inviteFrom: String,
@@ -83,5 +71,17 @@ fun DialogForIncomingRequest(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun DialogForIncomingRequestPreview() {
+    SplitterTheme {
+        DialogForIncomingRequest(
+            onAccept = {},
+            onDismiss = {},
+            inviteFrom = "Shah Rukh Khan"
+        )
     }
 }

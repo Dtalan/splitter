@@ -24,13 +24,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.divyanshu.splitter.common.theme.SplitterTheme
 import com.divyanshu.splitter.model.MainActions
 import com.divyanshu.splitter.model.MainScreenState
 import com.divyanshu.splitter.model.MessageType
-import com.divyanshu.splitter.common.theme.SplitterTheme
 
 @Composable
-fun HomeScreenContent(
+public fun HomeScreenContent(
     state: MainScreenState,
     dispatchAction: (MainActions) -> Unit = {},
 ) {
@@ -90,8 +90,7 @@ fun HomeScreenContent(
                     }
                 }
                 items(state.messagesFromServer.size) {
-                    val current = state.messagesFromServer[it]
-                    when (current) {
+                    when (val current = state.messagesFromServer[it]) {
                         is MessageType.Info -> {
                             Text(
                                 text = current.msg,
@@ -278,7 +277,7 @@ fun HomeScreenContent(
 
 @Preview(showBackground = true)
 @Composable
-fun HomeScreenContentPreview() {
+private fun HomeScreenContentPreview() {
     SplitterTheme {
         val state by remember {
             mutableStateOf(MainScreenState.forPreview())

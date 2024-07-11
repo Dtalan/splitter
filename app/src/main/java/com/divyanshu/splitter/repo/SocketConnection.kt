@@ -15,7 +15,7 @@ import java.net.URI
 
 private const val SOCKET_CONNECTION_TAG = "SocketConnection"
 
-class SocketConnection {
+public class SocketConnection {
     private val scope = CoroutineScope(Dispatchers.IO)
     private val url = "ws://192.168.1.7:3000"
 
@@ -23,10 +23,10 @@ class SocketConnection {
     private val gson = Gson()
 
     private val _events = MutableSharedFlow<SocketEvents>()
-    val event: SharedFlow<SocketEvents>
+    public val event: SharedFlow<SocketEvents>
         get() = _events
 
-    fun initSocket(
+    public fun initSocket(
         username: String,
     ) {
 
@@ -88,7 +88,7 @@ class SocketConnection {
         }
     }
 
-    fun sendMessageToSocket(message: MessageModel) {
+    public fun sendMessageToSocket(message: MessageModel) {
         try {
             Log.d(SOCKET_CONNECTION_TAG, "sendMessageToSocket: $message")
             webSocket?.send(Gson().toJson(message))

@@ -1,6 +1,6 @@
 package com.divyanshu.splitter.model
 
-data class MainScreenState(
+public data class MainScreenState(
     val isConnectedToServer: Boolean = false,
     val isConnectToPeer: String? = null,
     val connectedAs: String = "",
@@ -9,8 +9,8 @@ data class MainScreenState(
     val isRtcEstablished: Boolean = false,
     val peerConnectionString: String = "",
 ) {
-    companion object {
-        fun forPreview(): MainScreenState {
+    public companion object {
+        public fun forPreview(): MainScreenState {
             return MainScreenState(
                 isConnectedToServer = true,
                 isConnectToPeer = "Moto",

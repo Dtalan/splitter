@@ -3,15 +3,15 @@ package com.divyanshu.splitter.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divyanshu.splitter.model.IceCandidateModel
 import com.divyanshu.splitter.model.MainActions
 import com.divyanshu.splitter.model.MainOneTimeEvents
 import com.divyanshu.splitter.model.MainScreenState
-import com.divyanshu.splitter.model.IceCandidateModel
-import com.divyanshu.splitter.model.MessageType
-import com.divyanshu.splitter.repo.WebRTCManager
 import com.divyanshu.splitter.model.MessageModel
-import com.divyanshu.splitter.repo.SocketConnection
+import com.divyanshu.splitter.model.MessageType
 import com.divyanshu.splitter.model.SocketEvents
+import com.divyanshu.splitter.repo.SocketConnection
+import com.divyanshu.splitter.repo.WebRTCManager
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -27,18 +27,18 @@ import org.webrtc.SessionDescription
 
 private const val MAIN_VIEWMODEL_TAG = "MainViewModel"
 
-class MainViewModel : ViewModel() {
+public class MainViewModel : ViewModel() {
 
     private val _state = MutableStateFlow(
         MainScreenState()
     )
-    val state: StateFlow<MainScreenState>
+    public val state: StateFlow<MainScreenState>
         get() = _state
 
     private lateinit var newOfferMessage: MessageModel
 
     private val _oneTimeEvents = MutableSharedFlow<MainOneTimeEvents>()
-    val oneTimeEvents: Flow<MainOneTimeEvents>
+    public val oneTimeEvents: Flow<MainOneTimeEvents>
         get() = _oneTimeEvents.asSharedFlow()
 
     private val socketConnection = SocketConnection()
@@ -195,7 +195,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun dispatchAction(actions: MainActions) {
+    public fun dispatchAction(actions: MainActions) {
         when (actions) {
             is MainActions.ConnectAs -> {
                 socketConnection.initSocket(actions.name)

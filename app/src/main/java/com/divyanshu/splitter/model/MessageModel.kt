@@ -1,6 +1,6 @@
 package com.divyanshu.splitter.model
 
-data class MessageModel(
+public data class MessageModel(
     // TODO: Make it enum and refactor it @whattadarsh
     val type: String,
     val name: String? = null,

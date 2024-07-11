@@ -1,7 +1,7 @@
 package com.divyanshu.splitter.model
 
-class IceCandidateModel(
-    val sdpMid: String,
-    val sdpMLineIndex: Double,
-    val sdpCandidate: String
+public class IceCandidateModel(
+    public val sdpMid: String,
+    public val sdpMLineIndex: Double,
+    public val sdpCandidate: String
 )

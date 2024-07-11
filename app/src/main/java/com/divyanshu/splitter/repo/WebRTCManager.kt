@@ -22,7 +22,7 @@ import java.nio.ByteBuffer
 
 private const val WEB_RTC_MANAGER_TAG = "WebRtcManager"
 
-class WebRTCManager(
+public class WebRTCManager(
     private var target: String,
     private val socketConnection: SocketConnection,
     private val userName: String,
@@ -30,7 +30,7 @@ class WebRTCManager(
 
     private val scope = CoroutineScope(Dispatchers.IO)
     private val _messageStream = MutableSharedFlow<MessageType>()
-    val messageStream: SharedFlow<MessageType>
+    public val messageStream: SharedFlow<MessageType>
         get() = _messageStream
 
     private val iceServers = listOf(
@@ -63,7 +63,7 @@ class WebRTCManager(
         createDataChannel("localDataChannel")
     }
 
-    fun updateTarget(name: String) {
+    public fun updateTarget(name: String) {
         target = name
     }
 
@@ -123,7 +123,7 @@ class WebRTCManager(
         }
     }
 
-    fun createOffer(from: String, target: String) {
+    public fun createOffer(from: String, target: String) {
         Log.d(WEB_RTC_MANAGER_TAG, "user is available creating offer")
         val sdpObserver = object : SdpObserver {
             override fun onCreateSuccess(desc: SessionDescription?) {
@@ -171,7 +171,7 @@ class WebRTCManager(
         peerConnection.createOffer(sdpObserver, mediaConstraints)
     }
 
-    fun addIceCandidate(p0: IceCandidate?) {
+    public fun addIceCandidate(p0: IceCandidate?) {
         peerConnection.addIceCandidate(p0)
     }
 
@@ -249,7 +249,7 @@ class WebRTCManager(
         TODO("Not yet implemented")
     }
 
-    fun onRemoteSessionReceived(session: SessionDescription) {
+    public fun onRemoteSessionReceived(session: SessionDescription) {
         peerConnection.setRemoteDescription(object : SdpObserver {
             override fun onCreateSuccess(p0: SessionDescription?) {
             }
@@ -265,7 +265,7 @@ class WebRTCManager(
         }, session)
     }
 
-    fun answerToOffer(lTarget: String?) {
+    public fun answerToOffer(lTarget: String?) {
         val constraints = MediaConstraints()
         peerConnection.createAnswer(object : SdpObserver {
             override fun onCreateSuccess(desc: SessionDescription?) {
@@ -305,7 +305,7 @@ class WebRTCManager(
         }, constraints)
     }
 
-    fun sendMessage(msg: String) {
+    public fun sendMessage(msg: String) {
         val buffer = ByteBuffer.wrap(msg.toByteArray(Charsets.UTF_8))
         val binaryData = DataChannel.Buffer(buffer, false)
         scope.launch {

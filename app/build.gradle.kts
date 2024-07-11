@@ -49,6 +49,10 @@ android {
     }
 }
 
+kotlin {
+    explicitApi()
+}
+
 dependencies {
     //WebRTC related dependencies
     implementation(libs.stream.webrtc.android)
