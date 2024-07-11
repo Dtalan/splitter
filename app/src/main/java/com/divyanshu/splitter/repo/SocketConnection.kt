@@ -1,6 +1,8 @@
-package com.divyanshu.splitter.socket
+package com.divyanshu.splitter.repo
 
 import android.util.Log
+import com.divyanshu.splitter.model.MessageModel
+import com.divyanshu.splitter.model.SocketEvents
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -11,17 +13,9 @@ import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
 import java.net.URI
 
-private const val TAG = "SocketConnection"
+private const val SOCKET_CONNECTION_TAG = "SocketConnection"
 
-sealed class SocketEvents{
-    data class OnSocketMessageReceived(val message: MessageModel): SocketEvents()
-    data class ConnectionChange(val isConnected: Boolean): SocketEvents()
-    data class ConnectionError(val error: String): SocketEvents()
-}
-
-class SocketConnection(
-
-) {
+class SocketConnection {
     private val scope = CoroutineScope(Dispatchers.IO)
     private val url = "ws://192.168.1.7:3000"
 
@@ -38,7 +32,7 @@ class SocketConnection(
 
         webSocket = object : WebSocketClient(URI(url)) {
             override fun onOpen(handshakedata: ServerHandshake?) {
-                Log.d(TAG, "onOpen: ${Thread.currentThread()}")
+                Log.d(SOCKET_CONNECTION_TAG, "onOpen: ${Thread.currentThread()}")
                 sendMessageToSocket(
                     MessageModel(
                         "store_user", username, null, null
@@ -48,14 +42,14 @@ class SocketConnection(
 
             override fun onMessage(message: String?) {
                 try {
-                    Log.d(TAG, "onMessage: $message")
+                    Log.d(SOCKET_CONNECTION_TAG, "onMessage: $message")
                     emitEvent(
                         SocketEvents.OnSocketMessageReceived(
                             gson.fromJson(message, MessageModel::class.java)
                         )
                     )
                 } catch (e: Exception) {
-                    Log.d(TAG, "onMessage: error -> $e")
+                    Log.d(SOCKET_CONNECTION_TAG, "onMessage: error -> $e")
                     emitEvent(
                         SocketEvents.ConnectionError(
                             e.message ?: "error in receiving messages from socket"
@@ -66,7 +60,7 @@ class SocketConnection(
             }
 
             override fun onClose(code: Int, reason: String?, remote: Boolean) {
-                Log.d(TAG, "onClose: $reason")
+                Log.d(SOCKET_CONNECTION_TAG, "onClose: $reason")
                 emitEvent(
                     SocketEvents.ConnectionChange(
                         isConnected = false,
@@ -75,7 +69,7 @@ class SocketConnection(
             }
 
             override fun onError(ex: Exception?) {
-                Log.d(TAG, "onError: $ex")
+                Log.d(SOCKET_CONNECTION_TAG, "onError: $ex")
                 emitEvent(
                     SocketEvents.ConnectionError(
                         ex?.message ?: "Socket exception"
@@ -96,10 +90,10 @@ class SocketConnection(
 
     fun sendMessageToSocket(message: MessageModel) {
         try {
-            Log.d(TAG, "sendMessageToSocket: $message")
+            Log.d(SOCKET_CONNECTION_TAG, "sendMessageToSocket: $message")
             webSocket?.send(Gson().toJson(message))
         } catch (e: Exception) {
-            Log.d(TAG, "sendMessageToSocket: $e")
+            Log.d(SOCKET_CONNECTION_TAG, "sendMessageToSocket: $e")
         }
     }
 

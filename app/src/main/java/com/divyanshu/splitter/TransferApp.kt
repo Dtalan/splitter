@@ -3,12 +3,12 @@ package com.divyanshu.splitter
 import android.app.Application
 import android.content.Context
 
-class TransferApp: Application() {
+class TransferApp : Application() {
 
-    companion object{
+    companion object {
         private lateinit var application: Application
 
-        fun getContext(): Context{
+        fun getContext(): Context {
             return application
         }
     }
