@@ -19,9 +19,11 @@ sealed class SocketEvents{
     data class ConnectionError(val error: String): SocketEvents()
 }
 
-class SocketConnection {
+class SocketConnection(
 
+) {
     private val scope = CoroutineScope(Dispatchers.IO)
+    private val url = "ws://192.168.1.7:3000"
 
     private var webSocket: WebSocketClient? = null
     private val gson = Gson()
@@ -34,7 +36,7 @@ class SocketConnection {
         username: String,
     ) {
 
-        webSocket = object : WebSocketClient(URI("ws://192.168.0.108:3000")) {
+        webSocket = object : WebSocketClient(URI(url)) {
             override fun onOpen(handshakedata: ServerHandshake?) {
                 Log.d(TAG, "onOpen: ${Thread.currentThread()}")
                 sendMessageToSocket(
