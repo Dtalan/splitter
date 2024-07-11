@@ -1,4 +1,4 @@
-package com.divyanshu.splitter.ui.theme
+package com.divyanshu.splitter.common.theme
 
 import android.app.Activity
 import android.os.Build

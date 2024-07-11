@@ -1,0 +1,18 @@
+{
+  "name": "splitter",
+  "version": "0.0.1",
+  "description": "Temporary BE Server for WebRTC Testing",
+  "main": "TempServerCode.js",
+  "scripts": {
+    "test": ""
+  },
+  "author": "whattadarsh",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5",
+    "websocket": "^1.0.35",
+    "ws": "^8.18.0"
+  },
+  "type": "module"
+}
