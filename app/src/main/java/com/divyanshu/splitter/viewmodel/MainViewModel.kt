@@ -1,8 +1,8 @@
 package com.divyanshu.splitter.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.divyanshu.splitter.common.utils.LogUtil
 import com.divyanshu.splitter.model.MainActions
 import com.divyanshu.splitter.model.MainOneTimeEvents
 import com.divyanshu.splitter.model.MainScreenState
@@ -25,9 +25,8 @@ import kotlinx.coroutines.launch
 import org.webrtc.IceCandidate
 import org.webrtc.SessionDescription
 
-private const val MAIN_VIEWMODEL_TAG = "MainViewModel"
-
 class MainViewModel : ViewModel() {
+    private val TAG = MainViewModel::class.java.toString()
 
     private val _state = MutableStateFlow(
         MainScreenState()
@@ -69,7 +68,7 @@ class MainViewModel : ViewModel() {
                     }
 
                     is SocketEvents.ConnectionError -> {
-                        Log.d(MAIN_VIEWMODEL_TAG, "socket ConnectionError ${it.error}")
+                        LogUtil.d(TAG, "socket ConnectionError ${it.error}")
                     }
                 }
             }
@@ -77,14 +76,14 @@ class MainViewModel : ViewModel() {
     }
 
     private fun handleNewMessage(message: MessageModel) {
-        Log.d(MAIN_VIEWMODEL_TAG, "handleNewMessage in VM")
+        LogUtil.d(TAG, "handleNewMessage in VM")
         when (message.type) {
             "user_already_exists" -> {
                 sendMessageToUi(MessageType.Info("User already exists"))
             }
 
             "user_stored" -> {
-                Log.d(MAIN_VIEWMODEL_TAG, "User stored in socket")
+                LogUtil.d(TAG, "User stored in socket")
                 sendMessageToUi(MessageType.Info("User stored in socket"))
                 _state.update {
                     state.value.copy(
@@ -95,7 +94,7 @@ class MainViewModel : ViewModel() {
             }
 
             "transfer_response" -> {
-                Log.d(MAIN_VIEWMODEL_TAG, "transfer_response: ")
+                LogUtil.d(TAG, "transfer_response: ")
                 // user is online / offline
                 if (message.data == null) {
                     sendMessageToUi(MessageType.Info("User is not available"))
@@ -123,7 +122,7 @@ class MainViewModel : ViewModel() {
 
             "offer_received" -> {
                 newOfferMessage = message
-                Log.d(MAIN_VIEWMODEL_TAG, "offer_received ")
+                LogUtil.d(TAG, "offer_received ")
                 _state.update {
                     state.value.copy(
                         inComingRequestFrom = message.name.orEmpty(),
@@ -141,7 +140,7 @@ class MainViewModel : ViewModel() {
                     SessionDescription.Type.ANSWER,
                     message.data.toString()
                 )
-                Log.d(MAIN_VIEWMODEL_TAG, "onNewMessage: answer received $session")
+                LogUtil.d(TAG, "onNewMessage: answer received $session")
                 rtcManager.onRemoteSessionReceived(session)
             }
 
@@ -151,7 +150,7 @@ class MainViewModel : ViewModel() {
                         gson.toJson(message.data),
                         IceCandidateModel::class.java
                     )
-                    Log.d(MAIN_VIEWMODEL_TAG, "onNewMessage: ice candidate $receivingCandidate")
+                    LogUtil.d(TAG, "onNewMessage: ice candidate $receivingCandidate")
                     rtcManager.addIceCandidate(
                         IceCandidate(
                             receivingCandidate.sdpMid,
@@ -178,7 +177,7 @@ class MainViewModel : ViewModel() {
                     }
                 }
                 if (it is MessageType.MessageByMe) {
-                    Log.d(MAIN_VIEWMODEL_TAG, "consumeEventsFromRTC: ${it.msg}")
+                    LogUtil.d(TAG, "consumeEventsFromRTC: ${it.msg}")
                 }
                 sendMessageToUi(msg = it)
             }
