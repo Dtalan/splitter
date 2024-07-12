@@ -1,7 +1,7 @@
 package com.divyanshu.splitter.repo
 
-import android.util.Log
-import com.divyanshu.splitter.TransferApp
+import com.divyanshu.splitter.common.utils.ContextProvider
+import com.divyanshu.splitter.common.utils.LogUtil
 import com.divyanshu.splitter.model.MessageModel
 import com.divyanshu.splitter.model.MessageType
 import kotlinx.coroutines.CoroutineScope
@@ -20,13 +20,12 @@ import org.webrtc.SdpObserver
 import org.webrtc.SessionDescription
 import java.nio.ByteBuffer
 
-private const val WEB_RTC_MANAGER_TAG = "WebRtcManager"
-
 class WebRTCManager(
     private var target: String,
     private val socketConnection: SocketConnection,
     private val userName: String,
 ) : PeerConnection.Observer {
+    private val TAG = WebRTCManager::class.java.toString()
 
     private val scope = CoroutineScope(Dispatchers.IO)
     private val _messageStream = MutableSharedFlow<MessageType>()
@@ -70,7 +69,7 @@ class WebRTCManager(
     private fun initializePeerConnectionFactory() {
         val options = PeerConnectionFactory
             .InitializationOptions
-            .builder(TransferApp.getContext())
+            .builder(ContextProvider.getContext())
             .createInitializationOptions()
         PeerConnectionFactory.initialize(options)
 
@@ -91,15 +90,15 @@ class WebRTCManager(
         dataChannel = peerConnection.createDataChannel(label, init)
         dataChannel.registerObserver(object : DataChannel.Observer {
             override fun onBufferedAmountChange(amount: Long) {
-                Log.d(WEB_RTC_MANAGER_TAG, "data channel onBufferedAmountChange: ")
+                LogUtil.d(TAG, "data channel onBufferedAmountChange: ")
             }
 
             override fun onStateChange() {
-                Log.d(WEB_RTC_MANAGER_TAG, "data channel onStateChange ")
+                LogUtil.d(TAG, "data channel onStateChange ")
             }
 
             override fun onMessage(buffer: DataChannel.Buffer?) {
-                Log.d(WEB_RTC_MANAGER_TAG, "onMessage: at line 86")
+                LogUtil.d(TAG, "onMessage: at line 86")
                 consumeDataChannelData(buffer)
             }
         })
@@ -112,7 +111,7 @@ class WebRTCManager(
         data.get(bytes)
         val message = String(bytes, Charsets.UTF_8)
         // Handle the received message
-        Log.d(WEB_RTC_MANAGER_TAG, "Received message: $message")
+        LogUtil.d(TAG, "Received message: $message")
         scope.launch {
             if (message.isEmpty()) return@launch
             _messageStream.emit(
@@ -124,19 +123,19 @@ class WebRTCManager(
     }
 
     fun createOffer(from: String, target: String) {
-        Log.d(WEB_RTC_MANAGER_TAG, "user is available creating offer")
+        LogUtil.d(TAG, "user is available creating offer")
         val sdpObserver = object : SdpObserver {
             override fun onCreateSuccess(desc: SessionDescription?) {
                 peerConnection.setLocalDescription(object : SdpObserver {
                     override fun onCreateSuccess(desc: SessionDescription?) {
-                        Log.d(
-                            WEB_RTC_MANAGER_TAG,
+                        LogUtil.d(
+                            TAG,
                             "onCreateSuccess: .... using socket to notify peer"
                         )
                     }
 
                     override fun onSetSuccess() {
-                        Log.d(WEB_RTC_MANAGER_TAG, "onSetSuccess: ")
+                        LogUtil.d(TAG, "onSetSuccess: ")
                         val offer = hashMapOf(
                             "sdp" to desc?.description,
                             "type" to desc?.type
@@ -150,11 +149,11 @@ class WebRTCManager(
                     }
 
                     override fun onCreateFailure(error: String?) {
-                        Log.d(WEB_RTC_MANAGER_TAG, "error in creating offer $error")
+                        LogUtil.d(TAG, "error in creating offer $error")
                     }
 
                     override fun onSetFailure(error: String?) {
-                        Log.d(WEB_RTC_MANAGER_TAG, "onSetFailure: err-> $error")
+                        LogUtil.d(TAG, "onSetFailure: err-> $error")
                     }
                 }, desc)
                 // Send offer to signaling server
@@ -183,7 +182,7 @@ class WebRTCManager(
             PeerConnection.IceConnectionState.CONNECTED,
             PeerConnection.IceConnectionState.COMPLETED -> {
                 // Peers are connected
-                Log.d(WEB_RTC_MANAGER_TAG, "ICE Connection State: Connected ")
+                LogUtil.d(TAG, "ICE Connection State: Connected ")
                 scope.launch {
                     _messageStream.emit(
                         MessageType.ConnectedToPeer
@@ -193,7 +192,7 @@ class WebRTCManager(
 
             else -> {
                 // Peers are not connected
-                Log.d(WEB_RTC_MANAGER_TAG, "ICE Connection State: not Connected")
+                LogUtil.d(TAG, "ICE Connection State: not Connected")
             }
         }
     }
@@ -205,7 +204,7 @@ class WebRTCManager(
     }
 
     override fun onIceCandidate(p0: IceCandidate?) {
-        Log.d(WEB_RTC_MANAGER_TAG, "onIceCandidate called ....")
+        LogUtil.d(TAG, "onIceCandidate called ....")
         addIceCandidate(p0)
         val candidate = hashMapOf(
             "sdpMid" to p0?.sdpMid,
@@ -227,7 +226,7 @@ class WebRTCManager(
     }
 
     override fun onDataChannel(p0: DataChannel?) {
-        Log.d(WEB_RTC_MANAGER_TAG, "onDataChannel: called for peers")
+        LogUtil.d(TAG, "onDataChannel: called for peers")
         p0!!.registerObserver(object : DataChannel.Observer {
             override fun onBufferedAmountChange(p0: Long) {
             }
@@ -236,7 +235,7 @@ class WebRTCManager(
             }
 
             override fun onMessage(p0: DataChannel.Buffer?) {
-                Log.d(WEB_RTC_MANAGER_TAG, "onMessage: at line 196")
+                LogUtil.d(TAG, "onMessage: at line 196")
                 consumeDataChannelData(p0)
             }
         })
