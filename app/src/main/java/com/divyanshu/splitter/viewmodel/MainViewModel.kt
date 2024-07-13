@@ -26,7 +26,7 @@ import org.webrtc.IceCandidate
 import org.webrtc.SessionDescription
 
 class MainViewModel : ViewModel() {
-    private val TAG = MainViewModel::class.java.toString()
+    private val TAG = MainViewModel::class.java.simpleName
 
     private val _state = MutableStateFlow(
         MainScreenState()

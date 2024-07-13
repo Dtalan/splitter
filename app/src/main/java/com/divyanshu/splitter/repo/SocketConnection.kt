@@ -14,7 +14,7 @@ import org.java_websocket.handshake.ServerHandshake
 import java.net.URI
 
 class SocketConnection {
-    private val TAG = SocketConnection::class.java.toString()
+    private val TAG = SocketConnection::class.java.simpleName
     private val scope = CoroutineScope(Dispatchers.IO)
     private val url = "ws://192.168.1.7:3000"
 

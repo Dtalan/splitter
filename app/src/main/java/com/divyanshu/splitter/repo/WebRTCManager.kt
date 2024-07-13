@@ -25,7 +25,7 @@ class WebRTCManager(
     private val socketConnection: SocketConnection,
     private val userName: String,
 ) : PeerConnection.Observer {
-    private val TAG = WebRTCManager::class.java.toString()
+    private val TAG = WebRTCManager::class.java.simpleName
 
     private val scope = CoroutineScope(Dispatchers.IO)
     private val _messageStream = MutableSharedFlow<MessageType>()
@@ -140,6 +140,7 @@ class WebRTCManager(
                             "sdp" to desc?.description,
                             "type" to desc?.type
                         )
+                        LogUtil.d(TAG, "offer :: ${offer.values}")
 
                         socketConnection.sendMessageToSocket(
                             MessageModel(
@@ -211,6 +212,7 @@ class WebRTCManager(
             "sdpMLineIndex" to p0?.sdpMLineIndex,
             "sdpCandidate" to p0?.sdp
         )
+        LogUtil.d(TAG, "ICE candidate :: ${candidate.values}")
         socketConnection.sendMessageToSocket(
             MessageModel("ice_candidate", userName, target, candidate)
         )
