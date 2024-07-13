@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.gms.services)
 }
 
 android {
@@ -55,6 +56,10 @@ dependencies {
     implementation(libs.java.websocket)
     implementation(libs.gson)
 
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth.ktx)
 
     // Core Libraries
     implementation(libs.androidx.core.ktx)
@@ -68,7 +73,6 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
 
     // Test
     testImplementation(libs.junit)
@@ -86,4 +90,5 @@ dependencies {
     implementation(libs.ui)
     implementation(libs.androidx.material)
     implementation(libs.ui.tooling.preview)
+    implementation(libs.androidx.material3)
 }
