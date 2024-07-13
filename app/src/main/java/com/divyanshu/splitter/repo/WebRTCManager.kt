@@ -136,6 +136,8 @@ class WebRTCManager(
 
                     override fun onSetSuccess() {
                         LogUtil.d(TAG, "onSetSuccess: ")
+                        // IMP
+                        // SDP: save this
                         val offer = hashMapOf(
                             "sdp" to desc?.description,
                             "type" to desc?.type
@@ -177,6 +179,8 @@ class WebRTCManager(
     override fun onSignalingChange(p0: PeerConnection.SignalingState?) {
     }
 
+    // CHECK on this
+    // IMP
     override fun onIceConnectionChange(newState: PeerConnection.IceConnectionState?) {
         when (newState) {
             PeerConnection.IceConnectionState.CONNECTED,
@@ -203,7 +207,11 @@ class WebRTCManager(
     override fun onIceGatheringChange(p0: PeerConnection.IceGatheringState?) {
     }
 
+
+    // Ice Candidate
     override fun onIceCandidate(p0: IceCandidate?) {
+        // IMP
+        // ICE Candidate
         LogUtil.d(TAG, "onIceCandidate called ....")
         addIceCandidate(p0)
         val candidate = hashMapOf(
@@ -248,6 +256,7 @@ class WebRTCManager(
         TODO("Not yet implemented")
     }
 
+    // IMP
     fun onRemoteSessionReceived(session: SessionDescription) {
         peerConnection.setRemoteDescription(object : SdpObserver {
             override fun onCreateSuccess(p0: SessionDescription?) {

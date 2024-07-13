@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.divyanshu.splitter.common.theme.SplitterTheme
 import com.divyanshu.splitter.presentation.screens.HomeScreen
+import com.divyanshu.splitter.presentation.screens.TestScreen
 import kotlinx.coroutines.flow.Flow
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +19,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SplitterTheme {
-                HomeScreen()
+                TestScreen()
             }
         }
     }

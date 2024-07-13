@@ -42,7 +42,7 @@ class MainViewModel : ViewModel() {
 
     private val socketConnection = SocketConnection()
     private val gson = Gson()
-    private lateinit var rtcManager: WebRTCManager
+    lateinit var rtcManager: WebRTCManager
 
     init {
         listenToSocketEvents()
@@ -64,6 +64,7 @@ class MainViewModel : ViewModel() {
                     }
 
                     is SocketEvents.OnSocketMessageReceived -> {
+                        // Save SDP & ICE Candidate
                         handleNewMessage(it.message)
                     }
 
