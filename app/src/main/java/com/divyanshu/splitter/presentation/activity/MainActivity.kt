@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.divyanshu.splitter.common.theme.SplitterTheme
+import com.divyanshu.splitter.common.utils.ContextProvider
 import com.divyanshu.splitter.presentation.screens.HomeScreen
 import kotlinx.coroutines.flow.Flow
 
@@ -16,6 +17,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ContextProvider.setContext(this)
         setContent {
             SplitterTheme {
                 HomeScreen()

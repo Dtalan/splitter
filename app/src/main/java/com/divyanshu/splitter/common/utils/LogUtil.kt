@@ -1,6 +1,5 @@
 package com.divyanshu.splitter.common.utils
 
-import android.nfc.Tag
 import android.util.Log
 
 // TODO: Implement in-app logger using Timber? by @divyanshu

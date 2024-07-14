@@ -9,5 +9,4 @@ class TransferApp : Application() {
         super.onCreate()
         ContextProvider.setContext(this)
     }
-
 }
